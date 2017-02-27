@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_movie"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.android.popularmovies.MovieActivity">
+
+    <ImageView
+        android:id="@+id/movie_poster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/movie_original_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_poster"
+        tools:text="Original Title"
+        style="@style/Base.TextAppearance.AppCompat.Title"/>
+
+    <TextView
+        android:id="@+id/movie_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_original_title"
+        tools:text="01-01-1970" />
+
+    <TextView
+        android:id="@+id/movie_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_release"
+        tools:text="6.5" />
+
+    <TextView
+        android:id="@+id/movie_synopsis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/movie_rating"
+        tools:text="This is the synopsis" />
+</RelativeLayout>

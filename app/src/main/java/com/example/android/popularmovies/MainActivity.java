@@ -2,18 +2,19 @@ package com.example.android.popularmovies;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.android.popularmovies.adapter.MoviesAdapter;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.service.MovieService;
 
-import java.net.URL;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnClickMovieListener {
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
     MovieService mMovieService;
     RecyclerView mMovies;
     MoviesAdapter mMoviesAdapter;
+    ProgressBar mLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
         mMovieService = new MovieService(getString(R.string.the_movie_database_api_key));
 
         mMovies = (RecyclerView) findViewById(R.id.movies);
+        mMovies.setHasFixedSize(true);
         mMovies.setLayoutManager(new GridLayoutManager(this, 3));
+        mLoading = (ProgressBar) findViewById(R.id.loading);
         new MoviesTask().execute();
     }
 
@@ -82,11 +86,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            mLoading.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected void onPostExecute(List<Movie> movies) {
             super.onPostExecute(movies);
+            mLoading.setVisibility(View.GONE);
             mMoviesAdapter = new MoviesAdapter(movies, MainActivity.this);
             mMovies.setAdapter(mMoviesAdapter);
         }

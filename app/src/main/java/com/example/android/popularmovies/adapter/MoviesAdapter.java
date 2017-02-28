@@ -1,6 +1,5 @@
 package com.example.android.popularmovies.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +31,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View viewItem = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.movie_item, parent, false);
-        return new MovieViewHolder(viewItem.getContext(), viewItem);
+        return new MovieViewHolder(viewItem);
     }
 
     @Override
@@ -48,19 +47,19 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         Movie mMovie;
-        Context context;
+        View itemView;
         ImageView poster;
 
-        public MovieViewHolder(Context context, View itemView) {
+        public MovieViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-            this.context = context;
+            this.itemView = itemView;
             this.poster = (ImageView) itemView.findViewById(R.id.movie_poster);
         }
 
         public void bind(Movie mMovie) {
             this.mMovie = mMovie;
-            Picasso.with(context).load(mMovie.getPosterThumbnail()).into(poster);
+            Picasso.with(itemView.getContext()).load(mMovie.getPosterThumbnail()).into(poster);
         }
 
         @Override

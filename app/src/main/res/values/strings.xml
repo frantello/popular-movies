@@ -1,5 +1,5 @@
 <resources>
-    <string name="the_movie_database_api_key" translatable="false">[YOUR_KEY_HERE]</string>
+    <string name="the_movie_database_api_key" translatable="false">[YOUR_API_KEY]</string>
 
     <string name="app_name">Popular Movies</string>
     <string name="action_sort_by_popularity">Sort by popularity</string>

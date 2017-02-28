@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class Movie implements Serializable {
 
-    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185";
+    private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
 
     private String originalTitle;
     private String posterThumbnail;

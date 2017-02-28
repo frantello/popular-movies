@@ -22,8 +22,8 @@ import java.util.Scanner;
 public class MovieService {
 
     private static final String MOVIE_URL = "http://api.themoviedb.org/3/movie/%1$s?api_key=%2$s";
-    private static final String POPULAR = "popular";
-    private static final String TOP_RATED = "top_rated";
+    public static final String POPULAR = "popular";
+    public static final String TOP_RATED = "top_rated";
 
     private String apiKey;
 

@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
 
         mMovies = (RecyclerView) findViewById(R.id.movies);
         mMovies.setHasFixedSize(true);
-        mMovies.setLayoutManager(new GridLayoutManager(this, 3));
+        mMovies.setLayoutManager(new GridLayoutManager(this, 2));
         mLoading = (ProgressBar) findViewById(R.id.loading);
-        new MoviesTask().execute();
+        new MoviesTask().execute(MovieService.TOP_RATED);
     }
 
     @Override
@@ -48,10 +48,10 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort_by_popularity:
-                new MoviesTask().execute(item.getItemId());
+                new MoviesTask().execute(MovieService.POPULAR);
                 return true;
             case R.id.action_sort_by_rating:
-                new MoviesTask().execute(item.getItemId());
+                new MoviesTask().execute(MovieService.TOP_RATED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -65,16 +65,14 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
         startActivity(intent);
     }
 
-    class MoviesTask extends AsyncTask<Integer, Void, List<Movie>> {
+    class MoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         @Override
-        protected List<Movie> doInBackground(Integer... integers) {
-
-            Integer id = integers.length == 1 ? integers[0] : -1;
+        protected List<Movie> doInBackground(String... strings) {
 
             List<Movie> movies;
 
-            if (id == R.id.action_sort_by_rating) {
+            if (strings[0].equals("popular")) {
                 movies = mMovieService.findAllSortByPopularity();
             } else {
                 movies = mMovieService.findAllSortByRating();

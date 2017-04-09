@@ -15,6 +15,7 @@ import com.example.android.popularmovies.adapter.MoviesAdapter;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.service.MovieService;
 
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnClickMovieListener {
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
             case R.id.action_sort_by_rating:
                 new MoviesTask().execute(MovieService.TOP_RATED);
                 return true;
+            case R.id.action_sort_by_favorite:
+                new MoviesTask().execute(MovieService.FAVORITE);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -72,10 +76,13 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
 
             List<Movie> movies;
 
-            if (strings[0].equals("popular")) {
+            String sortBy = strings[0];
+            if (MovieService.POPULAR.equals(sortBy)) {
                 movies = mMovieService.findAllSortByPopularity();
-            } else {
+            } else if (MovieService.TOP_RATED.equals(sortBy)) {
                 movies = mMovieService.findAllSortByRating();
+            } else {
+                movies = mMovieService.findAllSortByFavourite();
             }
 
             return movies;

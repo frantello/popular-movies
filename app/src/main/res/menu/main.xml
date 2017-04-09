@@ -11,6 +11,12 @@
     <item
         android:id="@+id/action_sort_by_rating"
         android:title="@string/action_sort_by_rating"
-        android:orderInCategory="1"
+        android:orderInCategory="2"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_sort_by_favorite"
+        android:title="@string/action_sort_by_favorite"
+        android:orderInCategory="3"
         app:showAsAction="never" />
 </menu>

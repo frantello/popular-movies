@@ -1,8 +1,11 @@
 package com.example.android.popularmovies;
 
 import android.content.Intent;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
-public class MovieActivity extends AppCompatActivity {
+public class MovieActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Movie> {
 
     ImageView mPoster;
     TextView mOriginalTitle;
@@ -44,5 +47,28 @@ public class MovieActivity extends AppCompatActivity {
                 mRating.setText(String.valueOf(movie.getRating()));
             }
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.movie, menu);
+
+        return true;
+    }
+
+    @Override
+    public Loader<Movie> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Movie> loader, Movie data) {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Movie> loader) {
+
     }
 }

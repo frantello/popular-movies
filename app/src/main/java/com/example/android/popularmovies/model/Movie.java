@@ -2,6 +2,7 @@ package com.example.android.popularmovies.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Movie
@@ -16,6 +17,8 @@ public class Movie implements Serializable {
     private String synopsis;
     private Double rating;
     private String release;
+    private List<String> videos;
+    private List<String> reviews;
 
     public static String getPosterBaseUrl() {
         return POSTER_BASE_URL;
@@ -59,5 +62,21 @@ public class Movie implements Serializable {
 
     public void setRelease(String release) {
         this.release = release;
+    }
+
+    public List<String> getVideos() {
+        return videos;
+    }
+
+    public void setVideos(List<String> videos) {
+        this.videos = videos;
+    }
+
+    public List<String> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<String> reviews) {
+        this.reviews = reviews;
     }
 }

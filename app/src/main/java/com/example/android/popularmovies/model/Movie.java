@@ -1,7 +1,6 @@
 package com.example.android.popularmovies.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -11,14 +10,19 @@ import java.util.List;
 public class Movie implements Serializable {
 
     private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+    public static final String ORIGINAL_TITLE = "original_title";
+    public static final String OVERVIEWº = "overview";
+    public static final String VOTE_AVERAGE = "vote_average";
+    public static final String RELEASE_DATE = "release_date";
+    public static final String POSTER_PATH = "poster_path";
 
     private String originalTitle;
     private String posterThumbnail;
     private String synopsis;
     private Double rating;
     private String release;
-    private List<String> videos;
-    private List<String> reviews;
+    private List<Video> videos;
+    private List<Review> reviews;
 
     public static String getPosterBaseUrl() {
         return POSTER_BASE_URL;
@@ -64,19 +68,19 @@ public class Movie implements Serializable {
         this.release = release;
     }
 
-    public List<String> getVideos() {
+    public List<Video> getVideos() {
         return videos;
     }
 
-    public void setVideos(List<String> videos) {
+    public void setVideos(List<Video> videos) {
         this.videos = videos;
     }
 
-    public List<String> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<String> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 }

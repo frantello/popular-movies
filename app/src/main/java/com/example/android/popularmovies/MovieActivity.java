@@ -49,6 +49,12 @@ public class MovieActivity extends AppCompatActivity implements LoaderManager.Lo
         }
     }
 
+    private void onClickVideo() {
+
+        //Intent video = null;
+        //Intent.createChooser(video, "Play");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 

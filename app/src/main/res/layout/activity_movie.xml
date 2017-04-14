@@ -49,5 +49,19 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_rating"
             tools:text="This is the synopsis" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movie_trailers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_synopsis"
+            tools:listitem="@layout/trailer_item" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/movie_reviews"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_trailers"
+            tools:listitem="@layout/review_item"/>
     </RelativeLayout>
 </ScrollView>

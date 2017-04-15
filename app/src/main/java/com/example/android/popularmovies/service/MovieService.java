@@ -101,8 +101,9 @@ public class MovieService {
                 JSONObject item = array.getJSONObject(i);
 
                 Movie movie = new Movie();
+                movie.setId(item.getInt(Movie.ID));
                 movie.setOriginalTitle(item.getString(Movie.ORIGINAL_TITLE));
-                movie.setSynopsis(item.getString(Movie.OVERVIEWº));
+                movie.setSynopsis(item.getString(Movie.OVERVIEW));
                 movie.setRating(item.getDouble(Movie.VOTE_AVERAGE));
                 movie.setRelease(item.getString(Movie.RELEASE_DATE));
                 movie.setPosterThumbnail(item.getString(Movie.POSTER_PATH));

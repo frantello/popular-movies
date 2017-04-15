@@ -1,10 +1,12 @@
 package com.example.android.popularmovies.model;
 
+import java.io.Serializable;
+
 /**
  * Review.
  */
 
-public class Review {
+public class Review implements Serializable {
 
     public static final String RESULTS = "results";
 

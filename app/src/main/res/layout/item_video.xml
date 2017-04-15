@@ -6,6 +6,8 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="?listPreferredItemHeightSmall"
+    android:clickable="true"
+    android:background="?selectableItemBackground"
     android:gravity="center_vertical">
 
     <ImageView
@@ -14,9 +16,12 @@
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/trailer_name"
+        android:id="@+id/video_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        tools:text="Trailer 1"/>
+        android:layout_marginLeft="?listPreferredItemPaddingLeft"
+        android:maxLines="1"
+        android:ellipsize="end"
+        tools:text="Video name"/>
 </LinearLayout>

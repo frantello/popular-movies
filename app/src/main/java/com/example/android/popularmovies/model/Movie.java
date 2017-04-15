@@ -10,12 +10,15 @@ import java.util.List;
 public class Movie implements Serializable {
 
     private static final String POSTER_BASE_URL = "http://image.tmdb.org/t/p/w185/";
+    public static final String MOVIE = "movie";
+    public static final String ID = "id";
     public static final String ORIGINAL_TITLE = "original_title";
-    public static final String OVERVIEWº = "overview";
+    public static final String OVERVIEW = "overview";
     public static final String VOTE_AVERAGE = "vote_average";
     public static final String RELEASE_DATE = "release_date";
     public static final String POSTER_PATH = "poster_path";
 
+    private int id;
     private String originalTitle;
     private String posterThumbnail;
     private String synopsis;
@@ -24,8 +27,12 @@ public class Movie implements Serializable {
     private List<Video> videos;
     private List<Review> reviews;
 
-    public static String getPosterBaseUrl() {
-        return POSTER_BASE_URL;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getOriginalTitle() {

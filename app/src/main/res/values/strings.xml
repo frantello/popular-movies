@@ -9,4 +9,5 @@
     <string name="action_remove_favorite">Remove</string>
     <string name="activity_title_movie">Movie</string>
     <string name="activity_title_main">Popular Movies</string>
+    <string name="chooser_video_title">Play on</string>
 </resources>

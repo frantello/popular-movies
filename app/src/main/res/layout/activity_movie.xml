@@ -51,17 +51,21 @@
             tools:text="This is the synopsis" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/movie_trailers"
+            android:id="@+id/movie_videos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_synopsis"
-            tools:listitem="@layout/trailer_item" />
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_video" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/movie_reviews"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/movie_trailers"
-            tools:listitem="@layout/review_item"/>
+            android:layout_below="@id/movie_videos"
+            android:nestedScrollingEnabled="false"
+            android:overScrollMode="never"
+            tools:listitem="@layout/item_review"/>
     </RelativeLayout>
 </ScrollView>

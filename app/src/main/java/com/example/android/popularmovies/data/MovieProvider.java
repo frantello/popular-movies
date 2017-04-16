@@ -1,6 +1,7 @@
 package com.example.android.popularmovies.data;
 
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -83,13 +84,16 @@ public class MovieProvider extends ContentProvider {
         switch (buildUriMatcher().match(uri)) {
             case FAVORITES:
 
-                return "vnd.android.cursor.dir" + "/" + MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
+                return ContentResolver.CURSOR_DIR_BASE_TYPE + "/" +
+                        MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
             case FAVORITES_WITH_ID:
 
-                return "vnd.android.cursor.item" + "/" + MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
+                return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" +
+                        MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
 
             default:
-                throw new UnsupportedOperationException("Bad URI");
+
+                return null;
         }
     }
 

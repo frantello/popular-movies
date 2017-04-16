@@ -33,7 +33,8 @@
             android:id="@+id/movie_release"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/movie_poster"
+            android:layout_below="@id/movie_original_title"
+            android:layout_toRightOf="@id/movie_poster"
             tools:text="01-01-1970" />
 
         <TextView
@@ -41,13 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/movie_release"
+            android:layout_toRightOf="@id/movie_poster"
             tools:text="6.5" />
 
         <TextView
             android:id="@+id/movie_synopsis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/movie_rating"
+            android:layout_below="@id/movie_poster"
             tools:text="This is the synopsis" />
 
         <android.support.v7.widget.RecyclerView

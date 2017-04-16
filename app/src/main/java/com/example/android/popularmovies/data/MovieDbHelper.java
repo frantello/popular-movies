@@ -20,21 +20,27 @@ public class MovieDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        final String SQL_CREATE_TABLE_FAVORITE = "CRATE TABLE " + FavoriteContract.TABLE_NAME +
-                "(" +
-                FavoriteContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                FavoriteContract.COLUMN_MOVIE_ID + " INTEGER NOT NULL," +
-                FavoriteContract.COLUMN_MOVIE_TITLE + " TEXT NOT NULL" +
-                ")";
-        db.execSQL(SQL_CREATE_TABLE_FAVORITE);
+        final String SQL_CREATE_FAVORITE_TABLE =
+                "CREATE TABLE " + MovieContract.FavoriteEntry.TABLE_NAME +
+                        "(" +
+                        MovieContract.FavoriteEntry._ID + " INTEGER PRIMARY KEY," +
+                        MovieContract.FavoriteEntry.COLUMN_ORIGINAL_TITLE + " TEXT NOT NULL," +
+                        MovieContract.FavoriteEntry.COLUMN_POSTER_THUMBNAIL + " TEXT NOT NULL," +
+                        MovieContract.FavoriteEntry.COLUMN_SYNOPSIS + " TEXT NOT NULL," +
+                        MovieContract.FavoriteEntry.COLUMN_RATING + " REAL NOT NULL," +
+                        MovieContract.FavoriteEntry.COLUMN_RELEASE + " TEXT NOT NULL" +
+                        ")";
+
+        db.execSQL(SQL_CREATE_FAVORITE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        final String SQL_DROP_TABLE_FAVORITE =
-                "DROP TABLE IF EXISTS " + FavoriteContract.TABLE_NAME;
-        db.execSQL(SQL_DROP_TABLE_FAVORITE);
+        final String SQL_DROP_FAVORITE_TABLE =
+                "DROP TABLE IF EXISTS " + MovieContract.FavoriteEntry.TABLE_NAME;
+
+        db.execSQL(SQL_DROP_FAVORITE_TABLE);
 
         onCreate(db);
     }

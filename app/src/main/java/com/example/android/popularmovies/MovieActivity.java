@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,6 +32,10 @@ public class MovieActivity extends AppCompatActivity implements
 
     private static final int MOVIE_LOADER = 0;
 
+    private MovieService mMovieService;
+
+    private Movie movie;
+
     ImageView mPoster;
     TextView mOriginalTitle;
     TextView mSynopsis;
@@ -39,10 +44,15 @@ public class MovieActivity extends AppCompatActivity implements
     RecyclerView mVideos;
     RecyclerView mReviews;
 
+    MenuItem menuItemAddFavorite;
+    MenuItem menuItemRemoveFavorite;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+
+        mMovieService = new MovieService(this, getString(R.string.the_movie_database_api_key));
 
         mPoster = (ImageView) findViewById(R.id.movie_poster);
         mOriginalTitle = (TextView) findViewById(R.id.movie_original_title);
@@ -63,8 +73,8 @@ public class MovieActivity extends AppCompatActivity implements
 
             if (intent.hasExtra(Movie.MOVIE)) {
 
-                Movie movie = (Movie) intent.getSerializableExtra(Movie.MOVIE);
-                Picasso.with(this).load(movie.getPosterThumbnail()).into(mPoster);
+                movie = (Movie) intent.getSerializableExtra(Movie.MOVIE);
+                Picasso.with(this).load(movie.getPosterUrl()).into(mPoster);
                 mOriginalTitle.setText(movie.getOriginalTitle());
                 mSynopsis.setText(movie.getSynopsis());
                 mRelease.setText(movie.getRelease());
@@ -75,10 +85,6 @@ public class MovieActivity extends AppCompatActivity implements
                 getSupportLoaderManager().initLoader(MOVIE_LOADER, movieBundle, this);
             }
         }
-    }
-
-    private void onClickFavourite() {
-
     }
 
     @Override
@@ -116,20 +122,91 @@ public class MovieActivity extends AppCompatActivity implements
     }
 
     @Override
-    public Loader<Movie> onCreateLoader(int id, Bundle args) {
-        Movie movie = (Movie) args.getSerializable(Movie.MOVIE);
+    public boolean onPrepareOptionsMenu(Menu menu) {
 
-        return new MovieLoader(this, movie);
+        menuItemAddFavorite = menu.findItem(R.id.action_add_favorite);
+        menuItemRemoveFavorite = menu.findItem(R.id.action_remove_favorite);
+
+        if (movie.isFavorite()) {
+            showRemoveFavorite();
+        } else {
+            showAddFavorite();
+        }
+
+        return true;
     }
 
     @Override
+    public Loader<Movie> onCreateLoader(int id, Bundle args) {
+        Movie movie = (Movie) args.getSerializable(Movie.MOVIE);
+
+        return new MovieLoader(this, mMovieService, movie);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_favorite:
+                addFavorite();
+
+                return true;
+
+            case R.id.action_remove_favorite:
+                removeFavorite();
+
+                return true;
+
+            default:
+
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void addFavorite() {
+
+        if (mMovieService.addFavorite(movie)) {
+            showRemoveFavorite();
+        }
+    }
+
+    private void removeFavorite() {
+
+        if (mMovieService.removeFavorite(movie)) {
+            showAddFavorite();
+        }
+    }
+
+
+    @Override
     public void onLoadFinished(Loader<Movie> loader, Movie movie) {
+
+        this.movie = movie;
+
+        if (movie.isFavorite()) {
+            showRemoveFavorite();
+        } else {
+            showAddFavorite();
+        }
 
         mVideos.setAdapter(new VideosAdapter(movie.getVideos(), this));
         mVideos.getAdapter().notifyDataSetChanged();
 
         mReviews.setAdapter(new ReviewsAdapter(movie.getReviews(), this));
         mReviews.getAdapter().notifyDataSetChanged();
+    }
+
+    private void showAddFavorite() {
+        if (menuItemRemoveFavorite != null) {
+            menuItemAddFavorite.setVisible(true);
+            menuItemRemoveFavorite.setVisible(false);
+        }
+    }
+
+    private void showRemoveFavorite() {
+        if (menuItemRemoveFavorite != null) {
+            menuItemRemoveFavorite.setVisible(true);
+            menuItemAddFavorite.setVisible(false);
+        }
     }
 
     @Override
@@ -141,14 +218,11 @@ public class MovieActivity extends AppCompatActivity implements
 
         private Movie movie;
 
-        private String apiKey;
-
         private MovieService movieService;
 
-        public MovieLoader(Context context, Movie movie) {
+        public MovieLoader(Context context, MovieService movieService, Movie movie) {
             super(context);
-            this.apiKey = context.getString(R.string.the_movie_database_api_key);
-            movieService = new MovieService(apiKey);
+            this.movieService = movieService;
             this.movie = movie;
         }
 
@@ -162,6 +236,8 @@ public class MovieActivity extends AppCompatActivity implements
 
             List<Video> videos = movieService.findVideosByMovieId(movie.getId());
             List<Review> reviews = movieService.findReviewsByMovieId(movie.getId());
+
+            movie.setFavorite(movieService.isFavorite(movie));
 
             movie.setVideos(videos);
             movie.setReviews(reviews);

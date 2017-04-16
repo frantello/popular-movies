@@ -24,8 +24,13 @@ public class Movie implements Serializable {
     private String synopsis;
     private Double rating;
     private String release;
+    private boolean favorite;
     private List<Video> videos;
     private List<Review> reviews;
+
+    public String getPosterUrl() {
+        return POSTER_BASE_URL + posterThumbnail;
+    }
 
     public int getId() {
         return id;
@@ -44,7 +49,7 @@ public class Movie implements Serializable {
     }
 
     public String getPosterThumbnail() {
-        return POSTER_BASE_URL + posterThumbnail;
+        return posterThumbnail;
     }
 
     public void setPosterThumbnail(String posterThumbnail) {
@@ -73,6 +78,14 @@ public class Movie implements Serializable {
 
     public void setRelease(String release) {
         this.release = release;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     public List<Video> getVideos() {

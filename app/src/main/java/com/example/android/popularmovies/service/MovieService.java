@@ -1,7 +1,13 @@
 package com.example.android.popularmovies.service;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
+import com.example.android.popularmovies.data.MovieContract;
+import com.example.android.popularmovies.data.MovieProvider;
 import com.example.android.popularmovies.model.Movie;
 import com.example.android.popularmovies.model.Review;
 import com.example.android.popularmovies.model.Video;
@@ -36,10 +42,17 @@ public class MovieService {
     public static final String TOP_RATED = "top_rated";
     public static final String FAVORITE = "favorite";
 
+    private Context context;
+
+    private ContentResolver resolver;
+
     private String apiKey;
 
-    public MovieService(String apiKey) {
+    public MovieService(Context context, String apiKey) {
+        this.context = context;
         this.apiKey = apiKey;
+
+        resolver = context.getContentResolver();
     }
 
     public List<Movie> findAllSortByPopularity() {
@@ -148,7 +161,43 @@ public class MovieService {
 
     public List<Movie> findAllSortByFavourite() {
 
-        return Collections.emptyList();
+        Cursor cursor = resolver.query(MovieContract.FavoriteEntry.CONTENT_URI,
+                null, null, null, null);
+
+        if (cursor == null || cursor.getCount() < 1) {
+            if (cursor != null) {
+                cursor.close();
+            }
+            return Collections.emptyList();
+        }
+
+        int count = cursor.getCount();
+
+        List<Movie> movies = new ArrayList<>(count);
+
+        cursor.moveToFirst();
+        do {
+            Movie movie = new Movie();
+            movie.setId(cursor.getInt(cursor.getColumnIndex(MovieContract.FavoriteEntry._ID)));
+            movie.setOriginalTitle(cursor.getString(cursor.getColumnIndex(
+                    MovieContract.FavoriteEntry.COLUMN_ORIGINAL_TITLE)));
+            movie.setPosterThumbnail(cursor.getString(cursor.getColumnIndex(
+                    MovieContract.FavoriteEntry.COLUMN_POSTER_THUMBNAIL)));
+            movie.setSynopsis(cursor.getString(cursor.getColumnIndex(
+                    MovieContract.FavoriteEntry.COLUMN_SYNOPSIS)));
+            movie.setRating(cursor.getDouble(cursor.getColumnIndex(
+                    MovieContract.FavoriteEntry.COLUMN_RATING)));
+            movie.setRelease(cursor.getString(cursor.getColumnIndex(
+                    MovieContract.FavoriteEntry.COLUMN_RELEASE)));
+            movie.setFavorite(true);
+
+            movies.add(movie);
+
+        } while (cursor.moveToNext());
+
+        cursor.close();
+
+        return movies;
     }
 
     public List<Video> findVideosByMovieId(long movieId) {
@@ -271,8 +320,57 @@ public class MovieService {
         return Collections.emptyList();
     }
 
-    public Movie findById(long movieId) {
+    public boolean isFavorite(Movie movie) {
 
-        return null;
+        Uri uri = MovieContract.FavoriteEntry.CONTENT_URI.buildUpon()
+                .appendPath(String.valueOf(movie.getId())).build();
+
+        Cursor cursor = resolver.query(uri, null, null, null, null);
+
+        boolean favorite = cursor.getCount() > 0;
+
+        cursor.close();
+
+        return favorite;
+    }
+
+    public boolean addFavorite(Movie movie) {
+
+        ContentValues values = new ContentValues();
+        values.put(MovieContract.FavoriteEntry._ID, movie.getId());
+        values.put(MovieContract.FavoriteEntry.COLUMN_ORIGINAL_TITLE,
+                movie.getOriginalTitle());
+        values.put(MovieContract.FavoriteEntry.COLUMN_POSTER_THUMBNAIL,
+                movie.getPosterThumbnail());
+        values.put(MovieContract.FavoriteEntry.COLUMN_SYNOPSIS,
+                movie.getSynopsis());
+        values.put(MovieContract.FavoriteEntry.COLUMN_RATING,
+                movie.getRating());
+        values.put(MovieContract.FavoriteEntry.COLUMN_RELEASE,
+                movie.getRelease());
+
+        Uri uri = resolver.insert(MovieContract.FavoriteEntry.CONTENT_URI, values);
+
+        if (uri != null) {
+            movie.setFavorite(true);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean removeFavorite(Movie movie) {
+
+        Uri uri = MovieContract.FavoriteEntry.CONTENT_URI.buildUpon()
+                .appendPath(String.valueOf(movie.getId())).build();
+
+        int rows = resolver.delete(uri, null, null);
+
+        if (rows > 0) {
+            movie.setFavorite(false);
+            return true;
+        }
+
+        return false;
     }
 }

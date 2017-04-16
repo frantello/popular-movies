@@ -59,7 +59,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
 
         public void bind(Movie mMovie) {
             this.mMovie = mMovie;
-            Picasso.with(itemView.getContext()).load(mMovie.getPosterThumbnail()).into(poster);
+            Picasso.with(itemView.getContext()).load(mMovie.getPosterUrl()).into(poster);
         }
 
         @Override

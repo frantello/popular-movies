@@ -20,7 +20,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnClickMovieListener {
 
-    MovieService mMovieService;
+    private static final String SORT_BY_KEY = "sortBy";
+
+    private MovieService mMovieService;
+
+    private String sortBy = MovieService.TOP_RATED;
+
     RecyclerView mMovies;
     MoviesAdapter mMoviesAdapter;
     ProgressBar mLoading;
@@ -30,13 +35,32 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMovieService = new MovieService(getString(R.string.the_movie_database_api_key));
+        if (savedInstanceState != null) {
+            sortBy = savedInstanceState.getString(SORT_BY_KEY);
+        }
+
+
+        mMovieService = new MovieService(this, getString(R.string.the_movie_database_api_key));
 
         mMovies = (RecyclerView) findViewById(R.id.movies);
         mMovies.setHasFixedSize(true);
         mMovies.setLayoutManager(new GridLayoutManager(this, 2));
         mLoading = (ProgressBar) findViewById(R.id.loading);
-        new MoviesTask().execute(MovieService.TOP_RATED);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        new MoviesTask().execute(sortBy);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        outState.putString(SORT_BY_KEY, sortBy);
+
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -49,13 +73,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.OnC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_sort_by_popularity:
-                new MoviesTask().execute(MovieService.POPULAR);
+                sortBy = MovieService.POPULAR;
+                new MoviesTask().execute(sortBy);
                 return true;
             case R.id.action_sort_by_rating:
-                new MoviesTask().execute(MovieService.TOP_RATED);
+                sortBy = MovieService.TOP_RATED;
+                new MoviesTask().execute(sortBy);
                 return true;
             case R.id.action_sort_by_favorite:
-                new MoviesTask().execute(MovieService.FAVORITE);
+                sortBy = MovieService.FAVORITE;
+                new MoviesTask().execute(sortBy);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".MainActivity"
-            android:label="@string/activity_title_main">
+            android:label="@string/activity_title_main"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -30,6 +31,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="com.example.android.popularmovies"
+            android:name=".data.MovieProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

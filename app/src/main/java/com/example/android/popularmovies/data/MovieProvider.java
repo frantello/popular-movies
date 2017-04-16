@@ -83,10 +83,11 @@ public class MovieProvider extends ContentProvider {
         switch (buildUriMatcher().match(uri)) {
             case FAVORITES:
 
-                return "vnd.android.cursor.dir";
+                return "vnd.android.cursor.dir" + "/" + MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
             case FAVORITES_WITH_ID:
 
-                return "vnd.android.cursor.item";
+                return "vnd.android.cursor.item" + "/" + MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
+
             default:
                 throw new UnsupportedOperationException("Bad URI");
         }

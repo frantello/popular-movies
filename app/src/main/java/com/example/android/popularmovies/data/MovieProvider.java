@@ -84,11 +84,11 @@ public class MovieProvider extends ContentProvider {
         switch (buildUriMatcher().match(uri)) {
             case FAVORITES:
 
-                return ContentResolver.CURSOR_DIR_BASE_TYPE + "/" +
-                        MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
+                return ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd." +
+                        MovieContract.AUTHORITY + "." + MovieContract.PATH_FAVORITES;
             case FAVORITES_WITH_ID:
 
-                return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" +
+                return ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd" +
                         MovieContract.AUTHORITY + "/" + MovieContract.PATH_FAVORITES;
 
             default:
